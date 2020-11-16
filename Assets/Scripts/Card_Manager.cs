@@ -13,7 +13,6 @@ public class Card_Manager : MonoBehaviour
 
     Button DealButton;
     Button DrawButton;
-
     Button Hold1;
     Button Hold2;
     Button Hold3;
@@ -45,14 +44,12 @@ public class Card_Manager : MonoBehaviour
         Held4 = GameObject.Find("Held4Text").GetComponent<TextMeshProUGUI>();
         Held5 = GameObject.Find("Held5Text").GetComponent<TextMeshProUGUI>();
 
-
         Hold1 = GameObject.Find("Hold_Button_Spot_1").GetComponent<Button>();
         Hold2 = GameObject.Find("Hold_Button_Spot_2").GetComponent<Button>();
         Hold3 = GameObject.Find("Hold_Button_Spot_3").GetComponent<Button>();
         Hold4 = GameObject.Find("Hold_Button_Spot_4").GetComponent<Button>();
         Hold5 = GameObject.Find("Hold_Button_Spot_5").GetComponent<Button>();
 
-        //StartingDeck = GameObject.Find("Card Manager").GetComponent<Deck>();
         PHand = GameObject.Find("Card Manager").GetComponent<Player_Hand>();
         VPM = GameObject.Find("Poker_Manager").GetComponent<Video_Poker_Manager>();
         SC = GameObject.Find("Sprite_Manager").GetComponent<SpriteChanger>();
@@ -79,6 +76,7 @@ public class Card_Manager : MonoBehaviour
 
         int CardCount = 0;
 
+        //Creats the starting deck of type cards
         for(int i =0;i<4; i++)
         {
             for(int j =0;j<13; j++)
@@ -91,7 +89,6 @@ public class Card_Manager : MonoBehaviour
             }
         }
         FisherYates_Shuffle();
-        //PrintCards();
     }
 
     public void DealHand()
@@ -102,46 +99,35 @@ public class Card_Manager : MonoBehaviour
         Hold3.gameObject.SetActive(true);
         Hold4.gameObject.SetActive(true);
         Hold5.gameObject.SetActive(true);
+        //Sets each card in player hand to new card in deck
         PHand.hand[0] = StartingDeck[count];
-        //Debug.Log("Value1: " + PHand.hand[0].getValue() + ".Suite1: " + PHand.hand[0].GetSuite());
         SC.ChangeSprite(card1, 0);
         count++;
         CountCheck();
 
-
-
         PHand.hand[1] = StartingDeck[count];
-        //Debug.Log("Value2: " + PHand.hand[1].getValue() + ".Suite2: " + PHand.hand[1].GetSuite());
         SC.ChangeSprite(card2,1);
         count++;
         CountCheck();
 
-
-
         PHand.hand[2] = StartingDeck[count];
-        //Debug.Log("Value3: " + PHand.hand[2].getValue() + ".Suite3: " + PHand.hand[2].GetSuite());
         SC.ChangeSprite(card3,2);
         count++;
         CountCheck();
 
-
-         PHand.hand[3] = StartingDeck[count];
-        //Debug.Log("Value4: " + PHand.hand[3].getValue() + ".Suite4: " + PHand.hand[3].GetSuite());
+        PHand.hand[3] = StartingDeck[count];
         SC.ChangeSprite(card4,3);
         count++;
         CountCheck();
 
-
         PHand.hand[4] = StartingDeck[count];
-        //Debug.Log("Value5: " + PHand.hand[4].getValue() + ".Suite5: " + PHand.hand[4].GetSuite());
         SC.ChangeSprite(card5,4);
         count++;
         CountCheck();
 
+        //Deactivate this button and set the draw button
         DealButton.gameObject.SetActive(false);
         DrawButton.gameObject.SetActive(true);
-
-        //Debug.Log("Count: " + count);
     }
 
     public void DrawHand()
@@ -156,7 +142,7 @@ public class Card_Manager : MonoBehaviour
         Hold3.gameObject.SetActive(false);
         Hold4.gameObject.SetActive(false);
         Hold5.gameObject.SetActive(false);
-
+        //Checks to see if any cards were held and only replaces the ones which were not
         if (!PHand.spot1)
         {
             PHand.hand[0] = StartingDeck[count];
@@ -198,44 +184,36 @@ public class Card_Manager : MonoBehaviour
         }
 
         PHand.SetFalse();
-        //Debug.Log("Count: " + count);
-
         VPM.CheckWinnings();
-        //Hold1.isOn = !Hold1.isOn;
         DealButton.gameObject.SetActive(true);
         DrawButton.gameObject.SetActive(false);
     }
 
+    //Shuffle deck is all 52 cards are used
     public void CountCheck()
     {
-       // Debug.Log("In Check.");
-
         if(count == 52)
-        //if(StartingDeck.Count ==0)
         {
             FisherYates_Shuffle();
             count = 0;
         }
     }
 
+    //Shuffling algorithm of the cards
     public void FisherYates_Shuffle()
     {
         int j = 0;
         Card tempvalue;
-
         for (int i = 0; i < 52; i++)
         {
             j = Random.Range(0, 51);
-
             tempvalue = StartingDeck[i];
-
             StartingDeck[i] = StartingDeck[j];
-
             StartingDeck[j] = tempvalue;
         }
     }
 
-
+    //Set the flags for if the player holds the card at the specific position
     public void setholdflag1()
     {
         if (PHand.spot1 == true)
@@ -306,23 +284,5 @@ public class Card_Manager : MonoBehaviour
         }
 
     }
-
-    //Heart = 0
-    //Spade = 1
-    //club = 2
-    //Diamond = 3;
-    public void PrintCards()
-    {
-
-        int counter = 0;
-        foreach (Card item in StartingDeck)
-        {
-            Debug.Log("Card #: " + counter + ". Suite: " + item.GetSuite() + ". Card Value: " + item.getValue());
-            counter++;
-        }
-
-    }
-
-
 
 }

@@ -5,7 +5,6 @@ using UnityEngine;
 public class Player_Hand : MonoBehaviour
 {
     public Card[] hand = new Card[5];
-    //public List<Card> PlayerHand = new List<Card>();
 
     public bool spot1 = false;
     public bool spot2 = false;

@@ -9,18 +9,13 @@ public class Video_Poker_Manager : MonoBehaviour
 {
     public Card_Manager thisdeck;
     public Player_Hand PHand;
-    int[] temphand = new int[5];
-    int[] TempHandSuite = new int[5];
-    //int[] temphand = new int[] { 9,10,11,12,13};
-    //int[] TempHandSuite = new int[] { 2, 2, 2, 2, 2 };
-
-
     public Betting_Manager BM;
-
     public AudioSource MoneySound;
     public TextMeshProUGUI Winner_Text;
     public TextMeshProUGUI WinningMoneyText;
 
+    int[] temphand = new int[5];
+    int[] TempHandSuite = new int[5];
     bool jacksorbetter = false;
     bool threeofkind = false;
     bool fourofkind = false;
@@ -44,8 +39,10 @@ public class Video_Poker_Manager : MonoBehaviour
         WinningMoneyText.enabled = false;
     }
 
+    //Check each hand and set the flags
     public void CheckWinnings()
     {
+        //Check each hand and set the flags
         ArraySort();
         two_pair = TwoPairCheck();
         MultipleCheck();
@@ -53,9 +50,9 @@ public class Video_Poker_Manager : MonoBehaviour
         straight = StraightCheck();
         StraightFlush = StraightFlushCheck();
         RoyalFlush = RoyalFlushCheck();
-
+        //Print out the winning information
         Outcome();
-
+        //Reset all flags so there ready for the next hand
         jacksorbetter = false;
         threeofkind = false;
         fourofkind = false;
@@ -67,16 +64,11 @@ public class Video_Poker_Manager : MonoBehaviour
         two_pair = false;
     }
 
-    public void ChangeColor()
-    {
-
-    }
-
     public void ArraySort()
     {
-
         for (int i = 0; i < 5; i++)
         {
+            // Make the Aces = 13 so its easier for the StraightCheck() functions
             if (PHand.hand[i].getValue() == 0)
             {
                 temphand[i] = 13;
@@ -89,12 +81,10 @@ public class Video_Poker_Manager : MonoBehaviour
             }
         }
         Array.Sort(temphand);
-
     }
 
     public bool TwoPairCheck()
     {
-
         int paircount = 0;
         int tempcount = 1;
         for (int i = 0; i < temphand.Length - 1; i++)
@@ -124,7 +114,8 @@ public class Video_Poker_Manager : MonoBehaviour
         int lowestcount = 1;
         int tempcount = 1;
 
-
+        // Go through all the cards and get the Highest and lowest amount of the same cards
+        // The max should be 3, while the lowest should be 2 indicating a full house
        for(int i = 0; i < temphand.Length -1 ; i++)
         {
             if (temphand[i] == temphand[i + 1])
@@ -170,9 +161,10 @@ public class Video_Poker_Manager : MonoBehaviour
         
     }
 
+    //Check to see if the current spot in array + 1 is = to next spot in the array
+    //Checks for consecutive numbers
     public bool StraightCheck()
     {
-
         for (int i = 0; i < temphand.Length - 1; i++)
         {
             if(temphand[i] + 1 != temphand[i + 1])
@@ -183,9 +175,9 @@ public class Video_Poker_Manager : MonoBehaviour
         return true;
     }
 
+    //Check to make sure array is full of same numbers indicating flush
     public bool FlushCheck()
     {
-
         int MainSuite = TempHandSuite[0];
 
         for (int i = 1; i < TempHandSuite.Length - 1; i++)
@@ -215,7 +207,7 @@ public class Video_Poker_Manager : MonoBehaviour
         return false;
     }
 
-
+    // Writes out winning text for 2 seconds
     private IEnumerator Show_Winning_Message(string WinningMessage, string MoneyWon)
     {
         Winner_Text.SetText(WinningMessage);
@@ -228,6 +220,8 @@ public class Video_Poker_Manager : MonoBehaviour
         WinningMoneyText.enabled = false;
     }
 
+    //Shows winning amount and message based on highest flag set
+
     public void Outcome()
     {
         float MoneyWon = 0;
@@ -238,15 +232,13 @@ public class Video_Poker_Manager : MonoBehaviour
             MoneyWon = BM.WinningAmount(800f);
             BM.UpdateMoney(MoneyWon);
             StartCoroutine(Show_Winning_Message("Royal Flush!", MoneyWon.ToString("F2")));
-
-}
+        }
         else if (StraightFlush)
         {
             MoneySound.Play();
             MoneyWon = BM.WinningAmount(50f);
             BM.UpdateMoney(MoneyWon);
             StartCoroutine(Show_Winning_Message("Straight Flush!", MoneyWon.ToString("F2")));
-
         }
         else if (fourofkind)
         {
@@ -254,7 +246,6 @@ public class Video_Poker_Manager : MonoBehaviour
             MoneyWon = BM.WinningAmount(25f);
             BM.UpdateMoney(MoneyWon);
             StartCoroutine(Show_Winning_Message("Four Of A Kind!", MoneyWon.ToString("F2")));
-
         }
         else if (FullHouse)
         {
@@ -262,7 +253,6 @@ public class Video_Poker_Manager : MonoBehaviour
             MoneyWon = BM.WinningAmount(9f);
             BM.UpdateMoney(MoneyWon);
             StartCoroutine(Show_Winning_Message("Fullhouse!", MoneyWon.ToString("F2")));
-
         }
         else if (flush)
         {
@@ -270,7 +260,6 @@ public class Video_Poker_Manager : MonoBehaviour
             MoneyWon = BM.WinningAmount(6f);
             BM.UpdateMoney(MoneyWon);
             StartCoroutine(Show_Winning_Message("Flush!", MoneyWon.ToString("F2")));
-
         }
         else if (straight)
         {
@@ -292,7 +281,6 @@ public class Video_Poker_Manager : MonoBehaviour
             MoneyWon = BM.WinningAmount(2f);
             BM.UpdateMoney(MoneyWon);
             StartCoroutine(Show_Winning_Message("Two Pair!", MoneyWon.ToString("F2")));
-
         }
         else if (jacksorbetter)
         {
@@ -300,7 +288,6 @@ public class Video_Poker_Manager : MonoBehaviour
             MoneyWon = BM.WinningAmount(1f);
             BM.UpdateMoney(MoneyWon);
             StartCoroutine(Show_Winning_Message("Pair of Jacks Or Better!", MoneyWon.ToString("F2")));
-
         }
         else
         {
@@ -309,9 +296,6 @@ public class Video_Poker_Manager : MonoBehaviour
             BM.PlayerMoney -= BM.MainBet;
             BM.PlayerMoneyText.text = "$" + BM.PlayerMoney.ToString("F2");
         }
-
-
-
     }
 
     public void ExitGame()

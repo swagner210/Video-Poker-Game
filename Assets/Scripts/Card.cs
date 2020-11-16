@@ -4,9 +4,11 @@ using UnityEngine;
 
 public class Card : MonoBehaviour
 {
-
+    //Heart = 0
+    //Spade = 1
+    //club = 2
+    //Diamond = 3;
     int suite;
-
     int value;
 
     public int GetSuite()
@@ -28,16 +30,4 @@ public class Card : MonoBehaviour
     {
         value = CardValue;
     }
-
-    //public int CompareTo(Card card)
-    //{       // A null value means that this object is greater.
-    //    if (card == null)
-    //    {
-    //        return 1;
-    //    }
-    //    else
-    //    {
-    //        return this.value.CompareTo(card.value);
-    //    }
-    //}
 }

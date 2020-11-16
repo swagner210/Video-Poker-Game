@@ -50,13 +50,11 @@ public class Betting_Manager : MonoBehaviour
         }
     }
 
+    //Get the amount the player won per hand and return it float
     public float WinningAmount(float multipliyer)
     {
         float Winnings = 0f;
-
         Winnings = MainBet * multipliyer;
-
-
         return Winnings;
     }
 
@@ -65,6 +63,7 @@ public class Betting_Manager : MonoBehaviour
         PlayerMoneyText.text = "$" + (PlayerMoney + NewEarnings).ToString("F2");
     }
 
+    //Reset player money to $100 so they can keep playing.
     public void ResetMoney()
     {
         PlayerMoney = 100f;
