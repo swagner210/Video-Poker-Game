@@ -180,7 +180,7 @@ public class Video_Poker_Manager : MonoBehaviour
     {
         int MainSuite = TempHandSuite[0];
 
-        for (int i = 1; i < TempHandSuite.Length - 1; i++)
+        for (int i = 1; i < TempHandSuite.Length; i++)
         {
             if(TempHandSuite[i] != MainSuite)
             {
